@@ -1,4 +1,12 @@
 // projecteuler.net problem 94
+
+
+// NOT SOLVED !!!
+// probably because the numbers are too large and insufficient precision
+// probably need a diff formula for Area of Triangle
+// Heron's forumula generates numbers on the order of p**4  (closer to p**4 * (8/27))
+// which is almost 40 digits
+
 public class Problem94 {
 
 	// return area of triangle via Heron's formula
@@ -11,6 +19,7 @@ public class Problem94 {
 
 
 	// within our sloppy tolerance, is d an integer?
+	//   THIS MUST NOT WORK WITH ENOUGH PRECISION
 	public static boolean isInt(double d) {
 		return ((d % 1) == 0);
 	}
@@ -20,13 +29,14 @@ public class Problem94 {
 		long cumulativePerim = 0;
 		int countOfAETris = 0;
 
-		for (int i = 1; i < ((long) (1000000000/3)+2); i++) {
+		for (int i = 1; i < ((long) (1000000000/3)+2); i++) {   // sloppy, see *** below
 			int j = i + 1;
 			double area = 0.0;
 			boolean isInt = false;
 
 			if (i + i + j > 1000000000) {
-				System.out.println("skipping: " + i + " + " + i + " + " + j);
+				// low-budget check to handle approx roundoff, *** above
+				System.out.println("skipping: " + i + " + " + i + " + " + j);  // a couple of these print out
 				continue;
 			}
 
@@ -41,6 +51,7 @@ public class Problem94 {
 			}
 
 			if (i + j + j > 1000000000) {
+				// low-budget check to handle approx roundoff, *** above
 				System.out.println("skipping: " + i + " + " + j + " + " + j);
 				continue;
 			}
@@ -54,9 +65,6 @@ public class Problem94 {
 				cumulativePerim += (i+j+j);
 				//System.out.println("i, j, j: " + i + ", " + j + ", " + j);
 				//System.out.println("area: " + area);
-			}
-			if (i + j + j > 999999991) {
-				System.out.println("Perim: " + i + j + j);
 			}
 		}
 		System.out.println("Cumulative Perim: " + cumulativePerim);
