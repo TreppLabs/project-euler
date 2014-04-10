@@ -1,18 +1,34 @@
 // www.projecteuler.net Problem 114
 public class Problem114 {
-	private static int rowLength = 50;
+	private static final int ROW_LENGTH = 50;
+	private static final long NOT_SOLVED = -1;
+	private static long solutions [];
+
+	private static void initializeSolutions(){
+		solutions = new long[ROW_LENGTH+1];
+		for (int i=0; i<=ROW_LENGTH; i++) {
+			solutions[i] = NOT_SOLVED;
+		}
+	}
 
 	// recursively count the ways. 
-	// could store values to avoid repeat calculations, but this ran in 48 seconds as is
+	// takes 48 s with pure recursion
+	// takes 82 ms when storing pre-computed values
 	private static long countWays(int length) {
-		if (length==0) {
+		if (solutions[length] != NOT_SOLVED) {
+			return solutions[length];
+		} else if (length==0) {
 			// length 0 handles base cases
+			solutions[length] = 1;
 			return 1;
 		} else if (length==1) {
+			solutions[length] = 1;
 			return 1;
 		} else if (length==2) {
+			solutions[length] = 1;
 			return 1;
 		} else if (length==3) {
+			solutions[length] = 2;
 			return 2;  // 3 blacks or one red
 		} else {
 			// handle different cases....4 or more
@@ -25,11 +41,13 @@ public class Problem114 {
 			for (int redLength = 3; redLength < length; redLength++) {
 				totalWays += countWays(length - redLength - 1);
 			}
+			solutions[length] = totalWays;
 			return totalWays;
 		}
 	}
 
 	public static void main(String [] args) {
-		System.out.println(countWays(rowLength));
+		initializeSolutions();
+		System.out.println(countWays(ROW_LENGTH));
 	}
 }
